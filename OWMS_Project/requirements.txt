@@ -1,0 +1,4 @@
+Django==2.1.8
+ddt==1.4.1
+requests
+PyMySQL

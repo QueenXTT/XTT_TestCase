@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://www.example.org/Ec/">
+	<SOAP-ENV:Body>
+		<ns1:callService>
+		<paramsJson>
+		{
+			"transit_type": "0",
+			"receiving_shipping_type":"2",
+			"reference_no": "",
+			"tracking_number": "auto5461",
+			"warehouse_code": "USEA",
+			"eta_date": "2020-04-25",
+			"import_company":235,
+			"receiving_desc": "易碎品,轻拿轻放",
+			"verify": "1",
+			"items":
+			[
+				{
+				  "box_no": "1",
+				  "box_details": [{
+						"product_sku": "LDH_RFB_0001",
+						"quantity": "200"
+					}]
+				},
+				{
+				  "box_no": "2",
+				  "box_details": [{
+						"product_sku": "LDH_RFB_0002",
+						"quantity": "200"
+					}]
+				}
+			]
+		}
+		</paramsJson>
+			<appToken>cedfea676a560c316747a8a1491c99fe</appToken>
+			<appKey>38c5a9aaa2c119879b2f67a616e3e8fe</appKey>
+			<service>createGRN</service>
+		</ns1:callService>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
