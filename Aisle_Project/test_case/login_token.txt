@@ -1,0 +1,1 @@
+{"admin_token": "admintoken=249250c6624041a69a6da91750dfc9d3", "admin_role": "administator"}
