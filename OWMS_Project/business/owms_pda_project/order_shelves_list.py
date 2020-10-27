@@ -28,9 +28,27 @@ class Order_Shelves_List():
         assert response.get("status") == 1, response.get("info")
         log.info("[ {} ------ gcreceiving_sign ------ end ]\n".format(pyname))
 
-    def validate_box(self,box,sku,header=None):
+    def batch_sign(self,receiving_code,header=None):
         """
-        OWMS-PDA-收货-箱号/SKU验证
+        OWMS-PDA-批量签收-签收
+        """
+        log.info("[ {} ------ batch_sign ------ start ]".format(pyname))
+        url = host.get("owms_host") + owms_pda_url_sign.get("batch_sign", "")
+        # 如果外部传入header就更新配置中header的value
+        if header:
+            login_header['Cookie'] = header
+        data = { "box": receiving_code, "type": 1 }
+        response = requests.post(url=url, headers=login_header, data=data).json()
+        assert response.get("status") == 1, response.get("info")
+        log.info("[ {} ------ batch_sign ------ end ]\n".format(pyname))
+
+
+    def validate_box(self,box,sku,relatype,header=None):
+        """
+        OWMS-PDA-收货-箱号/SKU_验证
+        :param box: 箱号
+        :param sku: 商品编码
+        :param relatype: 签收类型
         """
         log.info("[ {} ------ validate_box ------ start ]".format(pyname))
         url = host.get("owms_host") + owms_pda_url_sign.get("validate_box", "")
@@ -41,7 +59,7 @@ class Order_Shelves_List():
             "type": "sku",
             "box": box,
             "sku": sku,
-            "relaType": 1
+            "relaType": relatype # 按箱签收为 1；批量签收为：2；
         }
         response = requests.post(url=url, headers=login_header, data=data).json()
         assert response.get("status") == 1, response.get("info")
@@ -61,13 +79,14 @@ class Order_Shelves_List():
         assert response.get("state") == 1, response.get("info")
         log.info("[ {} ------ get_sku_inventory ------ end ]\n".format(pyname))
 
-    def confirm_receipt(self, box, sku, c_code, r_code, header=None):
+    def confirm_receipt(self, box, sku, c_code, r_code, relatype, header=None):
         """
         OWMS-PDA-收货
         :param box: 箱号
         :param sku: 商品编码
         :param c_code: 容器号
         :param r_code: 入库单_单号
+        :param relatype: 签收类型【按箱签收为 1；批量签收为：2；】
         :param header: cookie
         """
         log.info("[ {} ------ confirm_receipt ------ start ]".format(pyname))
@@ -82,7 +101,7 @@ class Order_Shelves_List():
             "munber": 200,
             "container": c_code,
             "receiving_code": r_code,
-            "relaType": 1,
+            "relaType": relatype, # 按箱签收为 1；批量签收为：2；
             "wa_code_diff_is_ok": 0,
             "now_time": int(time.time()),
             "sku_time": int(time.time()),
@@ -90,9 +109,7 @@ class Order_Shelves_List():
             "wp_code": "",
             "wa_code": ""
         }
-        print(data)
         response = requests.post(url=url, headers=login_header, data=data).json()
-        print(response)
         assert response.get("status") == 1, response.get("info")
         log.info("[ {} ------ confirm_receipt ------ end ]\n".format(pyname))
 
@@ -101,13 +118,11 @@ class Order_Shelves_List():
         OWMS-PDA-收货验证
         """
         log.info("[ {} ------ get_received_log ------ start ]".format(pyname))
-        url = host.get("owms_host") + owms_pda_url_sign.get("confirm_receipt", "")
+        url = host.get("owms_host") + owms_pda_url_sign.get("get_received_log", "")
         # 如果外部传入header就更新配置中header的value
         if header:
             login_header['Cookie'] = header
-        print(url)
         response = requests.post(url=url, headers=login_header).json()
-        print(response)
         assert response.get("state") == 1, response.get("info")
         log.info("[ {} ------ get_received_log ------ end ]\n".format(pyname))
 
@@ -123,7 +138,6 @@ class Order_Shelves_List():
             login_header['Cookie'] = header
         data = { "container": c_code }
         response = requests.post(url=url, headers=login_header, data=data).json()
-        print(response)
         assert response.get("status") == 1, response.get("info")
         log.info("[ {} ------ check_container ------ end ]\n".format(pyname))
 
@@ -143,7 +157,6 @@ class Order_Shelves_List():
             "productBarcode": sku
         }
         response = requests.post(url=url, headers=login_header, data=data).json()
-        print(response)
         assert response.get("status") == 1, response.get("info")
         log.info("[ {} ------ press_sku ------ end ]\n".format(pyname))
 
@@ -165,7 +178,6 @@ class Order_Shelves_List():
             "pressMunber": 200
         }
         response = requests.post(url=url, headers=login_header, data=data).json()
-        print(response)
         assert response.get("status") == 1, response.get("info")
         log.info("[ {} ------ confirm_press ------ end ]\n".format(pyname))
 

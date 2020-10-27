@@ -27,10 +27,10 @@ class Receiving_Order_Process(unittest.TestCase):
         """ 按箱签收 - 箱号SKU """
         re_order = self.re_order_flow.create_receiving_order_auth(self.wms_cookies, self.owms_cookies)
         # receiving_order = {'customer_code': 'G898', 'box_nos': ['RVG898-201022-0022-1', 'RVG898-201022-0022-2']}
+        self.order_shelves.batch_sign(re_order.get("receiving_code"), self.owms_pda_cookies)  # 批量签收_签收
         num = 0
         for box in re_order.get("box_nos"):
             num += 1
-            self.order_shelves.gcreceiving_sign(box, self.owms_pda_cookies)  # 按箱签收_签收
             sku = re_order.get("customer_code") + "-" + (
                 parameter_config.owms_project.get("sku_{}".format(num)))  # 商品编号
             self.re_order_flow.receiving_confirm_receipt(re_order.get("receiving_code"), sku, re_type=1,

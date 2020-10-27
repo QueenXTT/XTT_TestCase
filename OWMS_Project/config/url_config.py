@@ -58,13 +58,14 @@ owms_pda_url = {
     # 入库单_签收_模块
     "order_shelves": {
         "press_box_sign": "/pda/gc-receiving/press-box-sign", # 按箱签收_签收
-        "validate_box": "/pda/gc-receiving/validate-box", # 收货_箱号/SKU验证
+        "validate_box": "/pda/gc-receiving/validate-box", # 收货_箱号/SKU_验证
         "get_sku_inventory": "/pda/gc-receiving/get-sku-inventory", # 收货_获取SKU库存
         "confirm_receipt": "/pda/gc-receiving/confirm-receipt", # 收货
         "get_received_log": "/pda/gc-receiving/get-received-log", # 收货验证
         "check_container": "/pda/gc-putaway/check-container", # 上架_检查容器
         "press_sku": "/pda/gc-putaway/press-sku", # 上架_检查SKU
-        "confirm_press": "/pda/gc-receiving/confirm-press" # 上架
+        "confirm_press": "/pda/gc-receiving/confirm-press", # 上架
+        "batch_sign": "/pda/gc-receiving/batch-sign" # 批量签收_签收
     }
 }
 

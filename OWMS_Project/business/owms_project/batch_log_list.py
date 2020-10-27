@@ -27,7 +27,7 @@ def inventory_batch_log(r_code, header=None):
     data = { "receiving_code": r_code }
     response = requests.post(url=url, headers=login_header, data=data).json()
     assert response.get("state") == 1, response.get("info")
-    print(response)
+    assert response.get("data")[0].get("receiving_code") == r_code, response.get("message")
     log.info("[ {} ------ inventory_batch_log ------ end ]\n".format(pyname))
 
 
